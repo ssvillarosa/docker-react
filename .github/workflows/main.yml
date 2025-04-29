@@ -16,6 +16,9 @@ jobs:
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -t cygnetops/react-test -f Dockerfile.dev .
           docker run -e CI=true cygnetops/react-test npm test
+          
+      - name: List contents
+        run: ls -la
 
       - name: Generate deployment package
         run: zip -r deploy.zip * -x '*.git*' '*.github*'
@@ -25,7 +28,6 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          use_existing_version_if_available: true
           application_name: frontend
           environment_name: Frontend-env
           existing_bucket_name: elasticbeanstalk-ap-southeast-2-306856845282
